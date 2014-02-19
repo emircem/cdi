@@ -1,7 +1,5 @@
 package com.vaadin.cdi.example.view;
 
-import javax.inject.Inject;
-
 import com.vaadin.cdi.CDIView;
 import com.vaadin.cdi.example.util.CounterService;
 import com.vaadin.ui.Button;
@@ -10,6 +8,9 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import javax.inject.Inject;
+import org.vaadin.maddon.label.RichText;
+import org.vaadin.maddon.layouts.MVerticalLayout;
 
 @CDIView
 public class RootView extends AbstractView {
@@ -20,16 +21,13 @@ public class RootView extends AbstractView {
 
     @Override
     protected Component buildContent() {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeUndefined();
+        VerticalLayout layout = new MVerticalLayout();
 
-        Label label = new Label("Top-level content here");
-        label.setSizeUndefined();
-        layout.addComponent(label);
+        layout.addComponent(new RichText().withMarkDown(
+                RootView.class.getResourceAsStream("/welcome.md")));
 
         final Label countLabel = new Label("UI scoped counter = "
                 + counterService.get());
-        countLabel.setSizeUndefined();
         layout.addComponent(countLabel);
 
         Button incrementButton = new Button("Increment UI scoped");

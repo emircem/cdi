@@ -1,9 +1,5 @@
 package com.vaadin.cdi.example.view;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.New;
-import javax.inject.Inject;
-
 import com.vaadin.cdi.CDIView;
 import com.vaadin.cdi.example.util.CounterService;
 import com.vaadin.ui.Button;
@@ -12,10 +8,15 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.New;
+import javax.inject.Inject;
+import org.vaadin.maddon.label.Header;
+import org.vaadin.maddon.layouts.MVerticalLayout;
 
 @CDIView(value = AdminView.VIEW_ID)
-// if access control is configured on the server, can use
-// @RolesAllowed(...)
+@RolesAllowed("Users")
 public class AdminView extends AbstractView {
 
     public static final String VIEW_ID = "admin";
@@ -35,12 +36,9 @@ public class AdminView extends AbstractView {
 
     @Override
     protected Component buildContent() {
-        VerticalLayout layout = new VerticalLayout();
-        layout.setSizeUndefined();
-
-        Label label = new Label("Admin only content here");
-        label.setSizeUndefined();
-        layout.addComponent(label);
+        VerticalLayout layout = new MVerticalLayout();
+        
+        layout.addComponent(new Header("This is only show for users in 'Users' role"));
 
         uiScopedCountLabel.setSizeUndefined();
         layout.addComponent(uiScopedCountLabel);

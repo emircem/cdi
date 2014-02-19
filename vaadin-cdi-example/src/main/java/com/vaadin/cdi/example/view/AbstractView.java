@@ -1,7 +1,5 @@
 package com.vaadin.cdi.example.view;
 
-import javax.inject.Inject;
-
 import com.vaadin.cdi.example.logging.LoggableEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -11,6 +9,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
+import javax.inject.Inject;
+import org.vaadin.maddon.layouts.MHorizontalLayout;
+import org.vaadin.maddon.layouts.MVerticalLayout;
 
 public abstract class AbstractView extends CustomComponent implements View {
 
@@ -46,10 +47,7 @@ public abstract class AbstractView extends CustomComponent implements View {
         loggableEvent.fire(new LoggableEvent("Enter view ["
                 + event.getViewName() + "]"));
 
-        setSizeFull();
-
-        VerticalLayout mainLayout = new VerticalLayout();
-        mainLayout.setSizeFull();
+        VerticalLayout mainLayout = new MVerticalLayout();
 
         Component navigationBar = buildNavigationBar();
         mainLayout.addComponent(navigationBar);
@@ -65,8 +63,7 @@ public abstract class AbstractView extends CustomComponent implements View {
     protected abstract Component buildContent();
 
     protected Component buildNavigationBar() {
-        HorizontalLayout navBar = new HorizontalLayout();
-        navBar.setSizeUndefined();
+        HorizontalLayout navBar = new MHorizontalLayout().withMargin(false);
 
         navBar.addComponent(new NavigationButton("Root view", null));
         navBar.addComponent(new NavigationButton("Complex view",
@@ -75,6 +72,9 @@ public abstract class AbstractView extends CustomComponent implements View {
                 EventLogView.VIEW_ID));
         navBar.addComponent(new NavigationButton("Admin view",
                 AdminView.VIEW_ID));
+        
+        navBar.addComponent(new NavigationButton("Login view",
+                LoginView.VIEW_ID));
 
         return navBar;
     }
